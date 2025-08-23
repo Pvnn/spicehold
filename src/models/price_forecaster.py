@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from prophet import Prophet
-from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import pickle
 import warnings
 from datetime import datetime
@@ -50,34 +50,33 @@ class CardamomPriceForecaster:
         
         return train_data, test_data
     
-    def create_prophet_model(self):
-        """Create and configure Prophet model optimized for cardamom prices"""
-        model = Prophet(
-            # Seasonality settings based on EDA insights
-            yearly_seasonality=True,        # Strong seasonal patterns (Jan high, May low)
-            weekly_seasonality=True,        # Day-of-week effects (Sunday lower)
-            daily_seasonality=False,        # No intraday patterns in auction data
-            
-            # Trend and changepoint parameters
-            changepoint_prior_scale=0.05,   # Moderate trend flexibility
-            seasonality_prior_scale=10.0,   # Strong seasonal effects
-            
-            # Uncertainty intervals
-            interval_width=0.80,            # 80% confidence intervals
-            seasonality_mode='additive'     # Linear seasonal effects
-        )
-        
-        # Add custom seasonalities based on EDA
-        # Quarterly pattern (Q1 highest, Q2 lowest)
-        model.add_seasonality(
-            name='quarterly',
-            period=365.25/4,
-            fourier_order=4
-        )
-        
-        self.model = model
-        print("🤖 Prophet model configured with cardamom-specific parameters")
-        return model
+    def create_prophet_model(self, tuned_params=None):
+      """Create optimized Prophet model"""
+      if tuned_params is None:
+          # Your current defaults
+          params = {
+              'changepoint_prior_scale': 0.05,
+              'seasonality_prior_scale': 10.0
+          }
+      else:
+          params = tuned_params
+      
+      model = Prophet(
+          yearly_seasonality=True,
+          weekly_seasonality=True,
+          daily_seasonality=False,
+          changepoint_prior_scale=params['changepoint_prior_scale'],
+          seasonality_prior_scale=params['seasonality_prior_scale'],
+          interval_width=0.80,
+          seasonality_mode='additive'
+      )
+      
+      # Add quarterly seasonality
+      model.add_seasonality(name='quarterly', period=365.25/4, fourier_order=4)
+      
+      self.model = model
+      return model
+
     
     def train_model(self):
         """Train Prophet model on cardamom auction data"""
@@ -112,14 +111,16 @@ class CardamomPriceForecaster:
         mae = mean_absolute_error(y_true, y_pred)
         rmse = np.sqrt(mean_squared_error(y_true, y_pred))
         mape = np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+        r2 = r2_score(y_true, y_pred)
         
         # Store metrics
         self.metrics = {
             'mae': mae,
             'rmse': rmse,
-            'mape': mape
+            'mape': mape,
+            'r2': r2
         }
-        
+        print(f"   R²: {r2:.3f}")
         print(f"📊 Model Performance Metrics:")
         print(f"   MAE (Mean Absolute Error): ₹{mae:.2f}/kg")
         print(f"   RMSE (Root Mean Square Error): ₹{rmse:.2f}/kg")
@@ -135,6 +136,12 @@ class CardamomPriceForecaster:
             print("   ✅ Good prediction accuracy")
         else:
             print("   ⚠️  Moderate prediction accuracy - consider model tuning")
+        results_df = pd.DataFrame({
+            'date': test_data['ds'],
+            'actual_price': y_true,
+            'predicted_price': y_pred
+        })
+        results_df.to_csv('cardamom_test_predictions.csv', index=False)
         
         return self.metrics
     

@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+/* Override Bootstrap input heights */
+.form-control, .form-select {
+    height: 40px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    line-height: 1.2 !important;
+    font-size: 0.95rem !important;
+    border-radius: 8px !important;
+}
+
+.form-label {
+    margin-bottom: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+}
+</style>
+<div class="container-fluid px-4 py-5">
+    <!-- Updated header with modern styling and removed emoji -->
+    <div class="row mb-5">
+        <div class="col">
+            <h2 class="fw-bold text-dark mb-3" style="font-family: 'Poppins', sans-serif;">AI Price Forecast</h2>
+            <p class="text-muted fs-6">Generate intelligent price predictions for optimal selling decisions</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100" style="border-radius: 16px;">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-bold mb-3" style="color: #2d5016;">Farm Details</h5>
+                    
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="harvest_date" class="form-label" style="color: #2d5016;">
+                                Harvest Date
+                            </label>
+                            <input type="date" class="form-control" id="harvest_date" name="harvest_date" 
+                                    value="{{ form_values.harvest_date }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label" style="color: #2d5016;">
+                                Quantity (kg)
+                            </label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" 
+                                    value="{{ form_values.quantity }}" min="1" max="10000" required 
+                                    placeholder="Enter quantity">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="storage_quality" class="form-label" style="color: #2d5016;">
+                                Storage Quality
+                            </label>
+                            <select class="form-select" id="storage_quality" name="storage_quality">
+                                <option value="Excellent (Air-tight, Cool)" {% if form_values.storage_quality == "Excellent (Air-tight, Cool)" %}selected{% endif %}>Excellent (Air-tight, Cool)</option>
+                                <option value="Good (Covered, Dry)" {% if form_values.storage_quality == "Good (Covered, Dry)" %}selected{% endif %}>Good (Covered, Dry)</option>
+                                <option value="Average (Basic Storage)" {% if form_values.storage_quality == "Average (Basic Storage)" %}selected{% endif %}>Average (Basic Storage)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="forecast_from_date" class="form-label" style="color: #2d5016;">
+                                Forecast From Date
+                            </label>
+                            <input type="date" class="form-control" id="forecast_from_date" name="forecast_from_date" 
+                                    value="{{ form_values.forecast_from_date }}" required>
+                        </div>
+                        
+                        <button type="submit" class="btn w-100 py-2 fw-semibold" 
+                                style="background: linear-gradient(135deg, #2d5016, #b8860b); color: white; border-radius: 8px;">
+                            Generate AI Forecast
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8 mb-5">
+            {% if forecast_data %}
+            <!-- Updated chart card with modern styling -->
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-body p-5">
+                    <h5 class="card-title fw-bold mb-5" style="font-family: 'Poppins', sans-serif; color: #2d5016; font-size: 1.3rem;">
+                        30-Day Price Forecast
+                    </h5>
+                    <div id="forecast-chart" style="background-color: #fafafa; border-radius: 8px; padding: 10px;"></div>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if recommendation %}
+            <!-- Updated recommendation card with modern styling -->
+            <div class="card border-0 shadow-sm mt-5">
+                <div class="card-body p-5 mt-5">
+                    <h5 class="card-title fw-bold mb-4" style="font-family: 'Poppins', sans-serif; color: #2d5016; font-size: 1.3rem;">
+                        AI Recommendation
+                    </h5>
+                    
+                    {% if recommendation.action == 'HOLD' %}
+                    <div class="alert border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border-left: 4px solid #b8860b !important; padding: 1.5rem;">
+                        <h5 class="fw-bold mb-3" style="color: #b8860b; font-size: 1.2rem;">
+                            HOLD Your Cardamom
+                        </h5>
+                        <p class="mb-2" style="font-size: 1rem;"><strong>Reason:</strong> {{ recommendation.reason }}</p>
+                        <p class="mb-2" style="font-size: 1rem;"><strong>Wait:</strong> {{ recommendation.days_to_wait }} days</p>
+                        <p class="mb-0" style="font-size: 1rem;"><strong>Optimal Date:</strong> 
+                            {% if recommendation.optimal_sell_date %}
+                                {% set date_obj = recommendation.optimal_sell_date %}
+                                {% if date_obj is string %}
+                                    {{ date_obj }}
+                                {% else %}
+                                    {{ date_obj.strftime('%d %B %Y') }}
+                                {% endif %}
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% else %}
+                    <div class="alert border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #d4edda 0%, #a8e6a3 100%); border-left: 4px solid #2d5016 !important; padding: 1.5rem;">
+                        <h5 class="fw-bold mb-3" style="color: #2d5016; font-size: 1.2rem;">
+                            SELL Now!
+                        </h5>
+                        <p class="mb-0" style="font-size: 1rem;"><strong>Reason:</strong> {{ recommendation.reason }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Enhanced metrics section with improved card design and visual hierarchy -->
+                    <div class="row mt-5 g-5">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #ffffff 0%, #f0f8f0 100%); border-radius: 16px;">
+                                <div class="card-body p-5">
+                                    <h6 class="fw-bold mb-4" style="color: #2d5016; font-family: 'Poppins', sans-serif; font-size: 1.2rem;">Price Metrics</h6>
+                                    
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="text-muted" style="font-size: 1rem;">Current Price</span>
+                                            <span class="fw-bold" style="color: #b8860b; font-size: 1.4rem;">₹{{ "%.0f"|format(recommendation.current_price_estimate) }}/kg</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px; border-radius: 10px; background-color: #f0f8f0;">
+                                            <div class="progress-bar" style="background: linear-gradient(90deg, #b8860b 0%, #daa520 100%); width: 60%; border-radius: 10px;"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="text-muted" style="font-size: 1rem;">Optimal Price</span>
+                                            <span class="fw-bold" style="color: #2d5016; font-size: 1.4rem;">₹{{ "%.0f"|format(recommendation.optimal_price_estimate) }}/kg</span>
+                                        </div>
+                                        <div class="progress" style="height: 8px; border-radius: 10px; background-color: #f0f8f0;">
+                                            <div class="progress-bar" style="background: linear-gradient(90deg, #2d5016 0%, #4a7c59 100%); width: 85%; border-radius: 10px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #ffffff 0%, #fffbf0 100%); border-radius: 16px;">
+                                <div class="card-body p-5">
+                                    <h6 class="fw-bold mb-4" style="color: #2d5016; font-family: 'Poppins', sans-serif; font-size: 1.2rem;">Potential Earnings</h6>
+                                    
+                                    <div class="text-center">
+                                        <div class="mb-4">
+                                            <p class="text-muted mb-1" style="font-size: 1rem;">Gain per kg</p>
+                                            <h4 class="fw-bold mb-0" style="color: #b8860b; font-size: 1.8rem;">₹{{ "%.0f"|format(recommendation.potential_gain_rs_per_kg) }}</h4>
+                                        </div>
+                                        <div class="p-4 rounded-3" style="background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e8 100%);">
+                                            <p class="text-muted mb-1" style="font-size: 1rem;">Total Potential Gain</p>
+                                            <h3 class="fw-bold mb-0" style="color: #2d5016; font-family: 'Poppins', sans-serif; font-size: 2rem;">₹{{ "%.0f"|format(recommendation.potential_gain_rs_per_kg * quantity) }}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Optional: localStorage for browser-level persistence -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Restore from localStorage on page load
+    ['harvest_date', 'quantity', 'storage_quality', 'forecast_from_date'].forEach(function(id) {
+        let savedValue = localStorage.getItem('spicehold_' + id);
+        let element = document.getElementById(id);
+        if (savedValue && element && !element.value) {
+            element.value = savedValue;
+        }
+    });
+    
+    // Save to localStorage when values change
+    ['harvest_date', 'quantity', 'storage_quality', 'forecast_from_date'].forEach(function(id) {
+        let element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('change', function() {
+                localStorage.setItem('spicehold_' + id, this.value);
+            });
+        }
+    });
+});
+</script>
+
+{% endblock %}
+
+{% block scripts %}
+{% if forecast_data %}
+<script>
+    const forecastData = {{ forecast_data|safe }};
+    
+    const trace = {
+        x: forecastData.labels,
+        y: forecastData.prices,
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#b8860b', width: 3},
+        marker: {size: 6, color: '#2d5016'}
+    };
+    
+    const layout = {
+        title: {
+            text: 'Cardamom Price Forecast',
+            font: {family: 'Poppins, sans-serif', size: 18, color: '#2d5016'}
+        },
+        xaxis: {
+            title: 'Date',
+            tickangle: 45,
+            automargin: true,
+            gridcolor: '#e8f5e8'
+        },
+        yaxis: {
+            title: 'Price (₹/kg)',
+            gridcolor: '#e8f5e8'
+        },
+        margin: {l: 50, r: 30, t: 60, b: 100},
+        height: 450,
+        plot_bgcolor: '#fafafa',
+        paper_bgcolor: '#fafafa'
+    };
+    
+    Plotly.newPlot('forecast-chart', [trace], layout, {responsive: true});
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Updated header with cleaner typography -->
+    <div class="row mb-5">
+        <div class="col">
+            <h1 class="display-5 fw-bold text-dark mb-3" style="font-family: 'Poppins', sans-serif;">Export Pools</h1>
+            <p class="lead text-muted" style="font-family: 'Inter', sans-serif;">Join forces with other farmers for direct export access and better prices</p>
+        </div>
+    </div>
+
+    <!-- Admin Only: Create Pool Section -->
+    {% if current_user.is_admin() %}
+    <div class="row mb-5">
+        <div class="col">
+            <!-- Changed button to scroll to form instead of opening modal, removed admin view badge -->
+            <button type="button" class="btn btn-lg px-4 py-3 fw-semibold" 
+                    style="background: linear-gradient(135deg, #16a34a, #ca8a04); color: white; border: none; border-radius: 12px; font-family: 'Inter', sans-serif;"
+                    onclick="scrollToCreateForm()">
+                Create New Pool
+            </button>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Completely redesigned available pools section with conditional headers -->
+    <div class="pools-section mb-5">
+        <!-- Conditional header based on user role -->
+        <h3 class="section-title mb-4" style="font-family: 'Poppins', sans-serif; color: #374151; font-weight: 700; font-size: 1.5rem;">
+            {% if current_user.is_admin() %}
+            All Pools (Admin Management)
+            {% else %}
+            Available Pools
+            {% endif %}
+        </h3>
+        
+        {% if active_pools %}
+            <!-- Updated grid to show 2 cards per row with bottom margins -->
+            <div class="pools-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                {% for pool_data in active_pools %}
+                <!-- Added bottom margin and reduced card size -->
+                <div class="pool-card" style="background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 2px solid {% if pool_data.is_member %}#16a34a{% else %}#e5e7eb{% endif %}; overflow: hidden; margin-bottom: 1.5rem;">
+                    <!-- Reduced padding from 1.5rem to 1.25rem -->
+                    <div class="card-content" style="padding: 1.25rem;">
+                        <!-- Redesigned header with flex layout -->
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+                            <!-- Reduced font size from 1.25rem to 1.125rem -->
+                            <h5 class="pool-title" style="font-family: 'Poppins', sans-serif; color: #1f2937; font-size: 1.125rem; font-weight: 600; margin: 0;">
+                                {{ pool_data.pool.name }}
+                            </h5>
+                            <div>
+                                {% if pool_data.is_member %}
+                                <span class="member-badge" style="background: #16a34a; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500; margin-right: 0.5rem;">Member</span>
+                                {% endif %}
+                                <!-- Admin indicator badge -->
+                                {% if current_user.is_admin() %}
+                                <span class="admin-badge" style="background: #06b6d4; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500;">Created by you</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Redesigned quantity display with CSS Grid -->
+                        <div class="quantity-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+                            <!-- Reduced padding from 1rem to 0.875rem -->
+                            <div class="quantity-box" style="background: #f8fafc; border-radius: 12px; padding: 0.875rem; text-align: center;">
+                                <!-- Reduced font size from 1.125rem to 1rem -->
+                                <div class="quantity-value" style="color: #16a34a; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem;">{{ pool_data.pool.target_quantity }} kg</div>
+                                <div class="quantity-label" style="color: #64748b; font-size: 0.875rem;">Target</div>
+                            </div>
+                            <div class="quantity-box" style="background: #f8fafc; border-radius: 12px; padding: 0.875rem; text-align: center;">
+                                <div class="quantity-value" style="color: #ca8a04; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem;">{{ pool_data.pool.current_quantity }} kg</div>
+                                <div class="quantity-label" style="color: #64748b; font-size: 0.875rem;">Current</div>
+                            </div>
+                        </div>
+
+                        <!-- Simplified progress section -->
+                        <div class="progress-section" style="margin-bottom: 1.25rem;">
+                            <div class="progress-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <span style="font-family: 'Inter', sans-serif; color: #64748b; font-size: 0.875rem;">Progress</span>
+                                <span style="font-family: 'Inter', sans-serif; color: #1f2937; font-weight: 600; font-size: 0.875rem;">{{ "%.1f"|format(pool_data.progress) }}%</span>
+                            </div>
+                            <div class="progress-bar-container" style="background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden;">
+                                <div class="progress-bar-fill" style="width: {{ "%.1f"|format(pool_data.progress) }}%; height: 100%; background: linear-gradient(90deg, #16a34a, #ca8a04); transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Redesigned metadata with CSS Grid -->
+                        <div class="metadata-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem; font-family: 'Inter', sans-serif; font-size: 0.875rem;">
+                            <div class="metadata-item" style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                                <span style="color: #64748b;">Price:</span>
+                                <span style="color: #1f2937; font-weight: 600;">₹{{ "%.0f"|format(pool_data.pool.target_price) }}/kg</span>
+                            </div>
+                            <div class="metadata-item" style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                                <span style="color: #64748b;">Members:</span>
+                                <span style="color: #1f2937; font-weight: 600;">{{ pool_data.members_count }}</span>
+                            </div>
+                            <div class="metadata-item" style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                                <span style="color: #64748b;">Deadline:</span>
+                                <span style="color: #1f2937; font-weight: 600;">{{ pool_data.pool.deadline.strftime('%b %d, %Y') }}</span>
+                            </div>
+                            <div class="metadata-item" style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                                <span style="color: #64748b;">Created by:</span>
+                                <span style="color: #1f2937; font-weight: 600;">{{ pool_data.creator_name }}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Conditional actions based on user role -->
+                        <div class="actions-section">
+                            {% if current_user.is_admin() %}
+                            <!-- Admin Actions -->
+                            <form method="POST" action="{{ url_for('pools.delete_pool', pool_id=pool_data.pool.id) }}" 
+                                  onsubmit="return confirm('Are you sure you want to delete this pool?')">
+                                <button type="submit" style="background: #dc2626; color: white; border: none; border-radius: 8px; padding: 0.75rem 1.5rem; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600;">
+                                    Delete Pool
+                                </button>
+                            </form>
+                            {% elif not pool_data.is_member %}
+                            <!-- User Join Action -->
+                            <form method="POST" action="{{ url_for('pools.join_pool') }}" class="join-form">
+                                <input type="hidden" name="pool_id" value="{{ pool_data.pool.id }}">
+                                <div class="form-group" style="display: flex; gap: 0.5rem;">
+                                    <input type="number" name="quantity" placeholder="Quantity (kg)" min="1" required
+                                           style="flex: 1; height: 44px; border: 2px solid #e2e8f0; border-radius: 8px; padding: 0 1rem; font-family: 'Inter', sans-serif; font-size: 0.875rem;">
+                                    <button type="submit" style="background: #16a34a; color: white; border: none; border-radius: 8px; padding: 0 1.5rem; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 600; white-space: nowrap;">
+                                        Join Pool
+                                    </button>
+                                </div>
+                            </form>
+                            {% else %}
+                            <!-- Member Status -->
+                            <div class="contribution-display" style="background: #f0fdf4; border-radius: 8px; padding: 1rem; text-align: center;">
+                                <div style="font-family: 'Inter', sans-serif; color: #16a34a; font-size: 0.875rem; font-weight: 600;">
+                                    ✓ You contributed {{ pool_data.user_contribution }}kg
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state" style="text-align: center; padding: 3rem 0;">
+                <p style="font-family: 'Inter', sans-serif; color: #64748b; font-size: 1rem;">No active pools found.</p>
+                {% if current_user.is_admin() %}
+                <p style="font-family: 'Inter', sans-serif; color: #64748b; font-size: 1rem;">Create the first pool to get started!</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- User Pool Memberships (Non-admin only) -->
+    {% if not current_user.is_admin() and user_pools %}
+    <div class="memberships-section">
+        <h3 class="section-title mb-4" style="font-family: 'Poppins', sans-serif; color: #374151; font-weight: 700; font-size: 1.5rem;">My Pool Memberships</h3>
+        {% for user_pool in user_pools %}
+        <div class="membership-card" style="background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 2px solid #e5e7eb; margin-bottom: 1.5rem; padding: 1.5rem;">
+            <h5 style="font-family: 'Poppins', sans-serif; color: #1f2937; font-weight: 600; margin-bottom: 1rem;">{{ user_pool.pool.name }}</h5>
+            <div class="membership-stats" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                <div style="background: #f0fdf4; border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #16a34a; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.125rem;">{{ user_pool.membership.quantity_contributed }}kg</div>
+                    <div style="color: #64748b; font-size: 0.875rem;">Your Contribution</div>
+                </div>
+                <div style="background: #fffbeb; border-radius: 8px; padding: 1rem; text-align: center;">
+                    <div style="color: #ca8a04; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.125rem;">{{ "%.1f"|format(user_pool.progress) }}%</div>
+                    <div style="color: #64748b; font-size: 0.875rem;">Pool Progress</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Admin Only: Create Pool Form Section -->
+    {% if current_user.is_admin() %}
+    <div id="createPoolForm" class="create-pool-section" style="background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 2px solid #e5e7eb; margin-top: 3rem; padding: 2rem; margin-bottom: 3rem;">
+        <h3 class="section-title mb-4" style="font-family: 'Poppins', sans-serif; color: #374151; font-weight: 700; font-size: 1.5rem;">Create New Pool</h3>
+        
+        <form method="POST" action="{{ url_for('pools.create_pool') }}">
+            <!-- 2-column form layout using CSS Grid -->
+            <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label class="form-label" style="font-family: 'Inter', sans-serif; color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block;">Pool Name</label>
+                    <input type="text" name="pool_name" placeholder="Premium Export Pool" required
+                           style="width: 100%; height: 48px; border: 2px solid #e5e7eb; border-radius: 8px; padding: 0 1rem; font-family: 'Inter', sans-serif; font-size: 1rem;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" style="font-family: 'Inter', sans-serif; color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block;">Target Quantity (kg)</label>
+                    <input type="number" name="target_quantity" min="100" value="500" required
+                           style="width: 100%; height: 48px; border: 2px solid #e5e7eb; border-radius: 8px; padding: 0 1rem; font-family: 'Inter', sans-serif; font-size: 1rem;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" style="font-family: 'Inter', sans-serif; color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block;">Target Price (₹/kg)</label>
+                    <input type="number" name="target_price" min="2500" step="0.01" value="3200" required
+                           style="width: 100%; height: 48px; border: 2px solid #e5e7eb; border-radius: 8px; padding: 0 1rem; font-family: 'Inter', sans-serif; font-size: 1rem;">
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label class="form-label" style="font-family: 'Inter', sans-serif; color: #374151; font-weight: 600; margin-bottom: 0.5rem; display: block;">Pool Deadline</label>
+                    <input type="date" name="deadline" value="{{ default_deadline }}" required
+                           style="width: 100%; height: 48px; border: 2px solid #e5e7eb; border-radius: 8px; padding: 0 1rem; font-family: 'Inter', sans-serif; font-size: 1rem;">
+                </div>
+            </div>
+            
+            <div class="form-actions" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                <button type="button" onclick="clearForm()"
+                        style="background: #f3f4f6; color: #6b7280; border: none; border-radius: 8px; padding: 0.75rem 1.5rem; font-family: 'Inter', sans-serif; font-size: 1rem;">
+                    Clear
+                </button>
+                <button type="submit"
+                        style="background: linear-gradient(135deg, #16a34a, #ca8a04); color: white; border: none; border-radius: 8px; padding: 0.75rem 1.5rem; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600;">
+                    Create Pool
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Added JavaScript for smooth scrolling and form clearing -->
+<script>
+function scrollToCreateForm() {
+    document.getElementById('createPoolForm').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+}
+
+function clearForm() {
+    const form = document.querySelector('#createPoolForm form');
+    form.reset();
+}
+</script>
+
+{% endblock %}

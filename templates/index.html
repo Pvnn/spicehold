@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spicehold - Empowering Small Farmers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f7f8f0;
+            --foreground: #2d3748;
+            --card: #ffffff;
+            --card-foreground: #2d3748;
+            --primary: #2f855a;
+            --primary-foreground: #ffffff;
+            --secondary: #d69e2e;
+            --secondary-foreground: #2d3748;
+            --muted: #f0fff4;
+            --muted-foreground: #4a5568;
+            --accent: #d69e2e;
+            --accent-foreground: #2d3748;
+            --border: #e2e8f0;
+            --radius: 0.5rem;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+        }
+        
+        .hero-minimal {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fffe 100%);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .cardamom-bg {
+            background-image: url('/placeholder.svg?height=800&width=1200');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .pulse-subtle {
+            animation: pulse-subtle 3s infinite;
+        }
+        
+        @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--foreground);
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <!-- Updated navigation with cleaner modern styling -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold" style="color: var(--primary);">🌿 Spicehold</h1>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#features" class="text-gray-600 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors">Features</a>
+                        <a href="#how-it-works" class="text-gray-600 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors">How It Works</a>
+                        <a href="#testimonials" class="text-gray-600 hover:text-green-600 px-3 py-2 text-sm font-medium transition-colors">Stories</a>
+                        <a href="/login" class="btn-primary px-6 py-3 rounded-lg text-sm font-semibold">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modernized hero section with minimal design -->
+    <section class="relative min-h-screen flex items-center justify-center hero-minimal">
+        <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto py-20">
+            <!-- Cleaner typography hierarchy with better spacing -->
+            <div class="mb-8 fade-in">
+                <p class="text-sm font-medium tracking-wide uppercase mb-4" style="color: var(--accent);">For Cardamom Farmers</p>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight" style="color: var(--foreground);">
+                    <span class="block">Ready to earn</span>
+                    <span class="block" style="color: var(--primary);">more with your</span>
+                    <span class="block">cardamom?</span>
+                </h1>
+            </div>
+            
+            <!-- Simplified description with better readability -->
+            <p class="text-lg md:text-xl mb-12 fade-in max-w-2xl mx-auto leading-relaxed" style="color: var(--muted-foreground); animation-delay: 0.2s;">
+                Harness technology and innovation to grow across the value chain. 
+                Connect with fellow farmers and access better markets.
+            </p>
+            
+            <!-- Clean minimal button design -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in" style="animation-delay: 0.4s;">
+                <button class="px-8 py-4 rounded-lg font-semibold text-lg btn-primary pulse-subtle" onclick="window.location.href='/login'">
+                    Get Started Now
+                </button>
+                <button class="px-8 py-4 rounded-lg font-semibold text-lg btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+                    Learn More
+                </button>
+            </div>
+
+            <!-- Added subtle visual element for modern touch -->
+            <div class="mt-16 fade-in" style="animation-delay: 0.6s;">
+                <div class="flex justify-center items-center space-x-2 text-sm" style="color: var(--muted-foreground);">
+                    <span>Trusted by farmers across Kerala</span>
+                    <div class="flex space-x-1">
+                        <div class="w-2 h-2 rounded-full" style="background-color: var(--primary);"></div>
+                        <div class="w-2 h-2 rounded-full" style="background-color: var(--accent);"></div>
+                        <div class="w-2 h-2 rounded-full" style="background-color: var(--primary);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <!-- Updated features section with modern spacing and cleaner design -->
+    <section id="features" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <p class="text-sm font-medium tracking-wide uppercase mb-4" style="color: var(--accent);">Our Solutions</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6" style="color: var(--foreground);">Smart Solutions for Smart Farmers</h2>
+                <p class="text-xl max-w-3xl mx-auto leading-relaxed" style="color: var(--muted-foreground);">
+                    Our AI-powered platform combines market intelligence with community strength to maximize your cardamom profits
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <!-- Feature 1 -->
+                <div class="card-hover bg-white p-10 rounded-2xl shadow-sm border border-gray-100 fade-in">
+                    <!-- Changed icon background from rounded-2xl to rounded-full for circular shape -->
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mb-8" style="background: linear-gradient(135deg, var(--accent), #f6ad55);">
+                        <span class="text-2xl">📈</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-6" style="color: var(--foreground);">Price Prediction AI</h3>
+                    <p class="mb-8 leading-relaxed text-lg" style="color: var(--muted-foreground);">
+                        Our advanced machine learning algorithms analyze market trends, weather patterns, and historical data to predict the optimal selling time for your cardamom harvest.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center text-gray-700"><span class="text-green-500 mr-3 text-lg">✓</span> Real-time market analysis</li>
+                        <li class="flex items-center text-gray-700"><span class="text-green-500 mr-3 text-lg">✓</span> Weather impact predictions</li>
+                        <li class="flex items-center text-gray-700"><span class="text-green-500 mr-3 text-lg">✓</span> Personalized recommendations</li>
+                    </ul>
+                </div>
+                
+                <div class="fade-in">
+                    <img src="../static/pred.png" alt="Price Prediction Dashboard" class="rounded-2xl shadow-lg">
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="fade-in order-2 md:order-1">
+                    <img src="../static/pools.png" alt="Harvest Pooling" class="rounded-2xl shadow-lg">
+                </div>
+                
+                <div class="card-hover bg-white p-10 rounded-2xl shadow-sm border border-gray-100 fade-in order-1 md:order-2">
+                    <!-- Changed icon background from rounded-2xl to rounded-full for circular shape -->
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mb-8" style="background: linear-gradient(135deg, var(--primary), #48bb78);">
+                        <span class="text-2xl">🤝</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-6" style="color: var(--foreground);">Harvest Pooling Network</h3>
+                    <p class="mb-8 leading-relaxed text-lg" style="color: var(--muted-foreground);">
+                        Connect with fellow farmers to pool your harvests, negotiate better prices with exporters, and access markets that were previously out of reach for individual farmers.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center text-gray-700"><span class="text-green-500 mr-3 text-lg">✓</span> Direct exporter connections</li>
+                        <li class="flex items-center text-gray-700"><span class="text-green-500 mr-3 text-lg">✓</span> Collective bargaining power</li>
+                        <li class="flex items-center text-gray-700"><span class="text-green-500 mr-3 text-lg">✓</span> Transparent pricing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <!-- Updated how it works section with modern card design and better spacing -->
+    <section id="how-it-works" class="py-24" style="background: linear-gradient(180deg, #f8fffe 0%, #ffffff 100%);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <p class="text-sm font-medium tracking-wide uppercase mb-4" style="color: var(--accent);">Simple Process</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6" style="color: var(--foreground);">How Spicehold Works</h2>
+                <p class="text-xl leading-relaxed" style="color: var(--muted-foreground);">Simple steps to maximize your cardamom profits</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="text-center fade-in bg-white p-8 rounded-2xl shadow-sm border border-gray-100 card-hover">
+                    <!-- Changed number background from rounded-2xl to rounded-full for circular shape -->
+                    <div class="w-20 h-20 rounded-full mx-auto mb-8 flex items-center justify-center text-white text-2xl font-bold" style="background: linear-gradient(135deg, var(--primary), #48bb78);">1</div>
+                    <h3 class="text-xl font-bold mb-6" style="color: var(--foreground);">Register Your Farm</h3>
+                    <p class="leading-relaxed" style="color: var(--muted-foreground);">Sign up and provide basic information about your cardamom farm, including location and typical harvest size.</p>
+                </div>
+                
+                <div class="text-center fade-in bg-white p-8 rounded-2xl shadow-sm border border-gray-100 card-hover" style="animation-delay: 0.2s;">
+                    <!-- Changed number background from rounded-2xl to rounded-full for circular shape -->
+                    <div class="w-20 h-20 rounded-full mx-auto mb-8 flex items-center justify-center text-white text-2xl font-bold" style="background: linear-gradient(135deg, var(--accent), #f6ad55);">2</div>
+                    <h3 class="text-xl font-bold mb-6" style="color: var(--foreground);">Get AI Predictions</h3>
+                    <p class="leading-relaxed" style="color: var(--muted-foreground);">Receive personalized price predictions and optimal selling time recommendations based on market analysis.</p>
+                </div>
+                
+                <div class="text-center fade-in bg-white p-8 rounded-2xl shadow-sm border border-gray-100 card-hover" style="animation-delay: 0.4s;">
+                    <!-- Changed number background from rounded-2xl to rounded-full for circular shape -->
+                    <div class="w-20 h-20 rounded-full mx-auto mb-8 flex items-center justify-center text-white text-2xl font-bold" style="background: linear-gradient(135deg, var(--primary), #48bb78);">3</div>
+                    <h3 class="text-xl font-bold mb-6" style="color: var(--foreground);">Pool & Sell</h3>
+                    <p class="leading-relaxed" style="color: var(--muted-foreground);">Join harvest pools with nearby farmers and connect directly with exporters for better prices and market access.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <!-- Updated testimonials section with modern card design and better typography -->
+    <section id="testimonials" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <p class="text-sm font-medium tracking-wide uppercase mb-4" style="color: var(--accent);">Success Stories</p>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6" style="color: var(--foreground);">Stories from Our Farmers</h2>
+                <p class="text-xl leading-relaxed" style="color: var(--muted-foreground);">Real farmers, real results</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-hover bg-white p-8 rounded-2xl shadow-sm border border-gray-100 fade-in">
+                    <div class="flex items-center mb-6">
+                       <img src="https://www.gravatar.com/avatar/?d=mp&s=60" alt="User" class="w-14 h-14 rounded-full mr-4 border-2 border-gray-100">
+                        <div>
+                            <h4 class="font-bold text-lg" style="color: var(--foreground);">Rajesh Kumar</h4>
+                            <p class="text-sm" style="color: var(--muted-foreground);">Idukki, Kerala</p>
+                        </div>
+                    </div>
+                    <p class="italic text-lg leading-relaxed" style="color: var(--muted-foreground);">"The price prediction helped me wait for the right moment to sell. I earned 30% more than last season!"</p>
+                </div>
+                
+                <div class="card-hover bg-white p-8 rounded-2xl shadow-sm border border-gray-100 fade-in" style="animation-delay: 0.2s;">
+                    <div class="flex items-center mb-6">
+                        <img src="https://www.gravatar.com/avatar/?d=mp&s=60" alt="User" class="w-14 h-14 rounded-full mr-4 border-2 border-gray-100">
+                        <div>
+                            <h4 class="font-bold text-lg" style="color: var(--foreground);">Priya Nair</h4>
+                            <p class="text-sm" style="color: var(--muted-foreground);">Wayanad, Kerala</p>
+                        </div>
+                    </div>
+                    <p class="italic text-lg leading-relaxed" style="color: var(--muted-foreground);">"Pooling our harvest with 5 other farmers got us direct access to exporters. No more middlemen!"</p>
+                </div>
+                
+                <div class="card-hover bg-white p-8 rounded-2xl shadow-sm border border-gray-100 fade-in" style="animation-delay: 0.4s;">
+                    <div class="flex items-center mb-6">
+                        <img src="https://www.gravatar.com/avatar/?d=mp&s=60" alt="User" class="w-14 h-14 rounded-full mr-4 border-2 border-gray-100">
+                        <div>
+                            <h4 class="font-bold text-lg" style="color: var(--foreground);">Murugan Pillai</h4>
+                            <p class="text-sm" style="color: var(--muted-foreground);">Thekkady, Kerala</p>
+                        </div>
+                    </div>
+                    <p class="italic text-lg leading-relaxed" style="color: var(--muted-foreground);">"This platform connected me with farmers I never knew existed. Together we're stronger!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- Updated footer with modern styling and better spacing -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">🌿 Spicehold</h3>
+                    <p class="text-gray-400 leading-relaxed">Empowering small farmers through technology and community.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-6 text-lg">Platform</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Price Predictions</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Harvest Pooling</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Market Access</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-6 text-lg">Support</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Community</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-6 text-lg">Connect</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">WhatsApp</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Telegram</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Facebook</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Spicehold. Built with ❤️ for farmers.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+
+        // Mobile menu toggle (if needed)
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Add some interactive hover effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-4px)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
