@@ -4,18 +4,157 @@
 <!-- Updated header with modern typography -->
 <div class="row mb-4">
     <div class="col">
-        <!-- Updated header to match landing page branding and improved visual hierarchy -->
-        <div class="d-flex align-items-center mb-3">
-            <div class="me-3" style="font-size: 3rem;"></div>
-            <div>
-                <h2 style="font-family: 'Poppins', sans-serif; font-weight: 800; color: #2d5016; font-size: 2.5rem; margin-bottom: 0;">Farm Dashboard</h2>
-                <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 0;">Welcome back, {{ current_user.name }}! Here's your farm overview.</p>
-            </div>
+        <!-- Removed redundant logo emoji from dashboard header -->
+        <div class="mb-3">
+            {% if current_user.role == 'admin' %}
+            <h2 style="font-family: 'Poppins', sans-serif; font-weight: 800; color: #2d5016; font-size: 2.5rem; margin-bottom: 0;">Admin Dashboard</h2>
+            <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 0;">System overview and management tools</p>
+            {% else %}
+            <h2 style="font-family: 'Poppins', sans-serif; font-weight: 800; color: #2d5016; font-size: 2.5rem; margin-bottom: 0;">Farm Dashboard</h2>
+            <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 0;">Welcome back, {{ current_user.name }}! Here's your farm overview.</p>
+            {% endif %}
         </div>
     </div>
 </div>
 
 <!-- Overview Stats -->
+{% if current_user.role == 'admin' %}
+<!-- Admin System Stats -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <!-- Updated card styling to match other pages, removed gradient backgrounds -->
+        <div class="card" style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 16px;">
+            <div class="card-body text-center" style="padding: 1.5rem;">
+                <div style="font-size: 2rem; margin-bottom: 1rem; color: #2d5016;">👥</div>
+                <h3 style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.8rem; color: #2d5016; margin-bottom: 0.5rem;">{{ admin_stats.total_users }}</h3>
+                <p style="font-weight: 500; color: #6b7280; margin-bottom: 0;">Total Users</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 16px;">
+            <div class="card-body text-center" style="padding: 1.5rem;">
+                <div style="font-size: 2rem; margin-bottom: 1rem; color: #d4af37;">🤝</div>
+                <h3 style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.8rem; color: #2d5016; margin-bottom: 0.5rem;">{{ admin_stats.total_pools }}</h3>
+                <p style="font-weight: 500; color: #6b7280; margin-bottom: 0;">Total Pools</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 16px;">
+            <div class="card-body text-center" style="padding: 1.5rem;">
+                <div style="font-size: 2rem; margin-bottom: 1rem; color: #d4af37;">📈</div>
+                <h3 style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.8rem; color: #2d5016; margin-bottom: 0.5rem;">{{ admin_stats.total_forecasts }}</h3>
+                <p style="font-weight: 500; color: #6b7280; margin-bottom: 0;">Total Predictions</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 16px;">
+            <div class="card-body text-center" style="padding: 1.5rem;">
+                <div style="font-size: 2rem; margin-bottom: 1rem; color: #2d5016;">⚖️</div>
+                <h3 style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.8rem; color: #2d5016; margin-bottom: 0.5rem;">{{ admin_stats.total_quantity }} kg</h3>
+                <p style="font-weight: 500; color: #6b7280; margin-bottom: 0;">Total Volume</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Management Tools -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card" style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 16px;">
+            <div class="card-body" style="padding: 1.5rem;">
+                <h5 style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #2d5016; display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                    <span style="font-size: 1.5rem;">⚡</span> Quick Management
+                </h5>
+                <div style="display: grid; gap: 1rem;">
+                    <a href="{{ url_for('pools.pools') }}" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: rgba(45, 80, 22, 0.1); border-radius: 12px; text-decoration: none; color: #2d5016; font-weight: 600; transition: all 0.3s ease;">
+                        <span style="font-size: 1.2rem;">🤝</span>Manage Pools
+                    </a>
+                    <a href="#" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: rgba(45, 80, 22, 0.1); border-radius: 12px; text-decoration: none; color: #2d5016; font-weight: 600; transition: all 0.3s ease;">
+                        <span style="font-size: 1.2rem;">👥</span>User Management
+                    </a>
+                    <!-- Removed Analytics link as requested -->
+                    <a href="{{ url_for('forecast.forecast') }}" style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: rgba(45, 80, 22, 0.1); border-radius: 12px; text-decoration: none; color: #2d5016; font-weight: 600; transition: all 0.3s ease;">
+                        <span style="font-size: 1.2rem;">📈</span>Price Predictions
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card" style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 16px;">
+            <div class="card-body" style="padding: 1.5rem;">
+                <h5 style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #2d5016; display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                    <span style="font-size: 1.5rem;">📈</span> Recent Prediction Activity
+                </h5>
+                {% if recent_activity %}
+                    {% for activity in recent_activity %}
+                    <!-- Fixed activity item layout and styling for better readability -->
+                    <div style="padding: 1.25rem; background: rgba(248, 250, 252, 0.8); border-radius: 12px; border-left: 4px solid #d4af37; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="color: #6b7280; font-weight: 500; font-size: 0.9rem; margin-bottom: 0.5rem;">{{ activity.created_at.strftime('%b %d, %Y %I:%M %p') }}</div>
+                                <div style="color: #2d5016; font-weight: 600; font-size: 1rem;">
+                                    {% if activity.user.name %}
+                                        {{ activity.user.name }} - {{ activity.action }}
+                                    {% else %}
+                                        {{ activity.action }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="text-align: center; padding: 2rem; background: rgba(248, 250, 252, 0.5); border-radius: 12px; border: 2px dashed #d4af37;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">📊</div>
+                        <p style="color: #6b7280; margin-bottom: 0;">No recent prediction activity</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Active Pools Overview for Admin -->
+{% if active_pools_overview %}
+<div class="row">
+    <div class="col">
+        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+            <div style="font-size: 2.5rem; margin-right: 1rem;">🤝</div>
+            <h4 style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #2d5016; margin-bottom: 0; font-size: 1.8rem;">Active Pools Overview</h4>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+            {% for pool in active_pools_overview %}
+            <div class="card" style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 16px; border-left: 4px solid #d4af37;">
+                <div class="card-body" style="padding: 1.5rem;">
+                    <h6 style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #2d5016; font-size: 1.2rem; margin-bottom: 1rem;">{{ pool.name }}</h6>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: #2d5016;">Members:</strong> <span style="color: #d4af37; font-weight: 600;">{{ pool.member_count }}</span></p>
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: #2d5016;">Target:</strong> <span style="color: #d4af37; font-weight: 600;">{{ pool.target_quantity }} kg</span></p>
+                        </div>
+                        <div>
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: #2d5016;">Current:</strong> <span style="color: #d4af37; font-weight: 600;">{{ pool.current_quantity }} kg</span></p>
+                            <p style="margin-bottom: 0.5rem;"><strong style="color: #2d5016;">Price:</strong> <span style="color: #d4af37; font-weight: 600;">₹{{ pool.target_price }}/kg</span></p>
+                        </div>
+                    </div>
+                    <div style="background: #f8f9fa; height: 8px; border-radius: 4px; margin-bottom: 0.5rem;">
+                        <div style="width: {{ (pool.current_quantity / pool.target_quantity * 100)|round(1) }}%; height: 100%; background: linear-gradient(135deg, #d4af37, #2d5016); border-radius: 4px;"></div>
+                    </div>
+                    <small style="color: #6b7280; font-weight: 600;">{{ (pool.current_quantity / pool.target_quantity * 100)|round(1) }}% Complete</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% else %}
+<!-- Farmer Dashboard -->
 <div class="row mb-4">
     <div class="col-md-3">
         <div class="card stat-card">
@@ -91,9 +230,11 @@
                     <div class="d-flex justify-content-between align-items-center mb-2" style="padding: 1rem; background: linear-gradient(135deg, rgba(45, 80, 22, 0.05), rgba(212, 175, 55, 0.05)); border-radius: 12px; border-left: 4px solid #d4af37; margin-bottom: 0.75rem;">
                         <div>
                             <small class="text-muted" style="font-weight: 500;">{{ forecast.created_at.strftime('%b %d, %Y') }}</small><br>
-                            <strong style="color: #2d5016; font-weight: 600;">{{ forecast.action }}</strong> - ₹{{ "%.0f"|format(forecast.potential_gain) }}/kg gain
+                            <!-- Updated text color for better contrast -->
+                            <strong style="color: #2d5016; font-weight: 600;">{{ forecast.action }}</strong> - <span style="color: #b45309; font-weight: 600;">₹{{ "%.0f"|format(forecast.potential_gain) }}/kg gain</span>
                         </div>
-                        <span class="badge bg-{{ 'warning' if forecast.action == 'HOLD' else 'success' }}" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
+                        <!-- Updated badge styling for better readability -->
+                        <span class="badge" style="background: {{ '#2d5016' if forecast.action == 'SELL' else '#d4af37' }}; color: {{ 'white' if forecast.action == 'SELL' else '#1a1a1a' }}; font-size: 0.8rem; padding: 0.5rem 1rem;">
                             {{ forecast.action }}
                         </span>
                     </div>
@@ -166,6 +307,8 @@
         {% endfor %}
     </div>
 </div>
+{% endif %}
+
 {% endif %}
 
 {% endblock %}

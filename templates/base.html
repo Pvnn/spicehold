@@ -279,8 +279,12 @@
                     🌿 Spicehold
                 </a>
                 {% if current_user.is_authenticated %}
-                <div class="navbar-nav">
-                    <span class="navbar-text">Welcome, {{ current_user.name }}!</span>
+                <div class="navbar-nav ms-auto">
+                    {% if current_user.is_admin() %}
+                    <a class="nav-link" href="{{ url_for('dashboard.dashboard') }}">Admin Dashboard</a>
+                    {% endif %}
+                    <a class="nav-link" href="{{ url_for('pools.pools') }}">Export Pools</a>
+                    <span class="navbar-text me-3">Welcome, {{ current_user.name }}!</span>
                     <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
                 </div>
                 {% endif %}

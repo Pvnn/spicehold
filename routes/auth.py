@@ -17,7 +17,6 @@ def login():
         
         if user and user.check_password(password):
             login_user(user)
-            flash(f'Welcome back, {user.name}!', 'success')
             return redirect(url_for('dashboard.dashboard'))
         else:
             flash('Invalid username or password', 'error')
@@ -27,5 +26,4 @@ def login():
 @auth_bp.route('/logout')
 def logout():
     logout_user()
-    flash('You have been logged out', 'info')
     return redirect(url_for('auth.login'))

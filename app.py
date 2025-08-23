@@ -46,7 +46,8 @@ def create_app():
             demo_users = [
                 {'username': 'raman_kumar', 'email': 'raman@gmail.com', 'name': 'Raman Kumar', 'location': 'Kumily', 'farm_size': 2.5},
                 {'username': 'priya_nair', 'email': 'priya@gmail.com', 'name': 'Priya Nair', 'location': 'Thekkady', 'farm_size': 1.8},
-                {'username': 'demo_farmer', 'email': 'demo@spicehold.com', 'name': 'Demo Farmer', 'location': 'Vandanmedu', 'farm_size': 3.0}
+                {'username': 'demo_farmer', 'email': 'demo@spicehold.com', 'name': 'Demo Farmer', 'location': 'Vandanmedu', 'farm_size': 3.0},
+                {'username': 'admin', 'email':'admin@spicehold.com', 'name': 'SpiceHold admin', 'role':'admin'}
             ]
             
             for user_data in demo_users:
