@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>🌾 Farm Dashboard</h2>
+        <p class="text-muted">Welcome back, {{ current_user.name }}! Here's your farm overview.</p>
+    </div>
+</div>
+
+<!-- Overview Stats -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card">
+            <div class="card-body text-center">
+                <h3 class="text-success">{{ stats.active_pools }}</h3>
+                <p class="mb-0">Active Pools</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card">
+            <div class="card-body text-center">
+                <h3 class="text-info">{{ stats.total_quantity }} kg</h3>
+                <p class="mb-0">Total Quantity</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card">
+            <div class="card-body text-center">
+                <h3 class="text-warning">{{ stats.total_forecasts }}</h3>
+                <p class="mb-0">Forecasts Made</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card">
+            <div class="card-body text-center">
+                <h3 class="text-primary">₹{{ "%.0f"|format(stats.avg_potential_gain) }}/kg</h3>
+                <p class="mb-0">Avg. Potential Gain</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">📊 Quick Actions</h5>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('forecast.forecast') }}" class="btn btn-outline-primary">Generate Price Forecast</a>
+                    <a href="{{ url_for('pools.pools') }}" class="btn btn-outline-success">View Export Pools</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">📈 Recent Forecasts</h5>
+                {% if recent_forecasts %}
+                    {% for forecast in recent_forecasts %}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <small class="text-muted">{{ forecast.created_at.strftime('%b %d, %Y') }}</small><br>
+                            <strong>{{ forecast.action }}</strong> - ₹{{ "%.0f"|format(forecast.potential_gain) }}/kg gain
+                        </div>
+                        <span class="badge bg-{{ 'warning' if forecast.action == 'HOLD' else 'success' }}">
+                            {{ forecast.action }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">No forecasts yet. <a href="{{ url_for('forecast.forecast') }}">Generate your first forecast!</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pool Performance -->
+{% if pool_details %}
+<div class="row">
+    <div class="col">
+        <h4>🤝 My Pool Memberships</h4>
+        {% for pool_data in pool_details %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="card-title">{{ pool_data.pool.name }}</h5>
+                        <p class="card-text">
+                            <strong>Your Contribution:</strong> {{ pool_data.membership.quantity_contributed }} kg<br>
+                            <strong>Target Price:</strong> ₹{{ "%.0f"|format(pool_data.pool.target_price) }}/kg<br>
+                            <strong>Status:</strong> {{ pool_data.membership.status.title() }}
+                        </p>
+                        <div class="progress mb-2">
+                            <div class="progress-bar" role="progressbar" 
+                                 style="width: {{ "%.1f"|format(pool_data.progress) }}%"
+                                 aria-valuenow="{{ "%.1f"|format(pool_data.progress) }}" 
+                                 aria-valuemin="0" aria-valuemax="100">
+                                {{ "%.1f"|format(pool_data.progress) }}%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-end">
+                            <h6 class="text-success">Estimated Value</h6>
+                            <h4>₹{{ "{:,}".format(pool_data.estimated_value|int) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

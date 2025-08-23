@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>🤝 Export Pools</h2>
+        <p class="text-muted">Join forces with other farmers for direct export access and better prices</p>
+    </div>
+</div>
+
+<!-- Create Pool Modal Trigger -->
+<div class="row mb-4">
+    <div class="col">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createPoolModal">
+            ➕ Create New Pool
+        </button>
+    </div>
+</div>
+
+<!-- Available Pools -->
+<div class="row mb-4">
+    <div class="col">
+        <h4>📋 Available Pools</h4>
+        {% if active_pools %}
+            <div class="row">
+                {% for pool_data in active_pools %}
+                <div class="col-md-6 mb-3">
+                    <div class="card {% if pool_data.is_member %}border-success{% endif %}">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ pool_data.pool.name }}
+                                {% if pool_data.is_member %}
+                                <span class="badge bg-success">Member</span>
+                                {% endif %}
+                            </h5>
+                            <p class="card-text">
+                                <strong>Target:</strong> {{ pool_data.pool.target_quantity }} kg<br>
+                                <strong>Current:</strong> {{ pool_data.pool.current_quantity }} kg<br>
+                                <strong>Price:</strong> ₹{{ "%.0f"|format(pool_data.pool.target_price) }}/kg<br>
+                                <strong>Deadline:</strong> {{ pool_data.pool.deadline.strftime('%b %d, %Y') }}<br>
+                                <strong>Members:</strong> {{ pool_data.members_count }}<br>
+                                <strong>Created by:</strong> {{ pool_data.creator_name }}
+                            </p>
+                            
+                            <div class="progress mb-2">
+                                <div class="progress-bar" role="progressbar" 
+                                     style="width: {{ "%.1f"|format(pool_data.progress) }}%"
+                                     aria-valuenow="{{ "%.1f"|format(pool_data.progress) }}" 
+                                     aria-valuemin="0" aria-valuemax="100">
+                                    {{ "%.1f"|format(pool_data.progress) }}%
+                                </div>
+                            </div>
+                            
+                            {% if not pool_data.is_member %}
+                            <form method="POST" action="{{ url_for('pools.join_pool') }}" class="d-inline">
+                                <input type="hidden" name="pool_id" value="{{ pool_data.pool.id }}">
+                                <div class="input-group mb-2">
+                                    <input type="number" class="form-control" name="quantity" 
+                                           placeholder="Quantity (kg)" min="1" required>
+                                    <button type="submit" class="btn btn-primary">Join Pool</button>
+                                </div>
+                            </form>
+                            {% else %}
+                            <p class="text-success">
+                                <i class="fas fa-check-circle"></i> 
+                                You contributed {{ pool_data.user_contribution }} kg
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">No active pools found. Be the first to create one!</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- My Pool Memberships -->
+{% if user_pools %}
+<div class="row">
+    <div class="col">
+        <h4>🎯 My Pool Memberships</h4>
+        {% for user_pool in user_pools %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="card-title">{{ user_pool.pool.name }}</h5>
+                        <p>
+                            <strong>Your Contribution:</strong> {{ user_pool.membership.quantity_contributed }} kg<br>
+                            <strong>Pool Progress:</strong> {{ "%.1f"|format(user_pool.progress) }}%<br>
+                            <strong>Target Price:</strong> ₹{{ "%.0f"|format(user_pool.pool.target_price) }}/kg
+                        </p>
+                        
+                        {% if user_pool.progress >= 80 %}
+                        <div class="alert alert-info">
+                            🎉 Pool almost full! Exporter recommendations available below.
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <div class="progress mb-2">
+                            <div class="progress-bar" role="progressbar" 
+                                 style="width: {{ "%.1f"|format(user_pool.progress) }}%">
+                                {{ "%.1f"|format(user_pool.progress) }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exporter Recommendations -->
+                {% if user_pool.exporters %}
+                <hr>
+                <h6>🎯 Recommended Exporters</h6>
+                <div class="row">
+                    {% for exporter in user_pool.exporters %}
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">#{{ loop.index }} {{ exporter.name }}</h6>
+                                <p class="card-text">
+                                    <strong>Price:</strong> ₹{{ exporter.price_per_kg }}/kg<br>
+                                    <strong>Payment:</strong> {{ exporter.payment_days }} days<br>
+                                    <strong>Reputation:</strong> {{ exporter.reputation }}%<br>
+                                    <strong>Score:</strong> {{ "%.2f"|format(exporter.score) }}
+                                </p>
+                                <form method="POST" action="{{ url_for('pools.select_exporter') }}">
+                                    <input type="hidden" name="pool_id" value="{{ user_pool.pool.id }}">
+                                    <input type="hidden" name="exporter_name" value="{{ exporter.name }}">
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        Select {{ exporter.name }}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Create Pool Modal -->
+<div class="modal fade" id="createPoolModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Pool</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('pools.create_pool') }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="pool_name" class="form-label">Pool Name</label>
+                        <input type="text" class="form-control" id="pool_name" name="pool_name" 
+                               placeholder="Premium Export Pool" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="target_quantity" class="form-label">Target Quantity (kg)</label>
+                        <input type="number" class="form-control" id="target_quantity" name="target_quantity" 
+                               min="100" value="500" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="target_price" class="form-label">Target Price (₹/kg)</label>
+                        <input type="number" class="form-control" id="target_price" name="target_price" 
+                               min="2500" step="0.01" value="3200" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deadline" class="form-label">Pool Deadline</label>
+                        <input type="date" class="form-control" id="deadline" name="deadline" 
+                                    value="{{ default_deadline }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">🚀 Create Pool</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
