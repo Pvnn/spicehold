@@ -1,5 +1,15 @@
-env/
-.env
-*.pyc
+# Python cache
 __pycache__/
-.pyc
+*.pyc
+*.pyo
+*.pyd
+*.pyd
+*.pkl
+*.egg-info/
+
+# Virtual environment
+venv/
+env/
+.venv/
+ENV/
+.env
