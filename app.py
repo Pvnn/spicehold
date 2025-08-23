@@ -60,7 +60,7 @@ def create_app():
     def index():
         if current_user.is_authenticated:
             return redirect(url_for('dashboard.dashboard'))
-        return redirect(url_for('auth.login'))
+        return render_template("index.html")
     
     return app
 

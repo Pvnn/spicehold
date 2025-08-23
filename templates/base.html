@@ -3,28 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}SpiceHold - AI Cardamom Intelligence{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>{% block title %}Spicehold - AI Cardamom Intelligence{% endblock %}</title>
+    <!-- Updated to modern fonts and removed Bootstrap for custom styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .navbar-brand { font-weight: 600; color: #2E8B57 !important; }
-        .card { box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .pool-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .stat-card { border-left: 5px solid #2E8B57; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fffe 0%, #f0f9f4 100%);
+            color: #1a1a1a;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Modern navbar with golden-green theme */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #2d5016 !important;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .navbar-text {
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .nav-link {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(135deg, #d4af37, #2d5016);
+            color: white;
+        }
+
+        /* Modern alert styling */
+        .alert {
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 12px;
+            border: none;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, rgba(45, 80, 22, 0.1), rgba(212, 175, 55, 0.1));
+            color: #2d5016;
+            border-left: 4px solid #d4af37;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(248, 215, 218, 0.3));
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Modern card styling */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #2d5016;
+            margin-bottom: 1rem;
+        }
+
+        /* Modern button styling */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37, #2d5016);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-outline-primary {
+            background: transparent;
+            border: 2px solid #d4af37;
+            color: #2d5016;
+        }
+
+        .btn-outline-primary:hover {
+            background: linear-gradient(135deg, #d4af37, #2d5016);
+            color: white;
+        }
+
+        .btn-outline-success {
+            background: transparent;
+            border: 2px solid #2d5016;
+            color: #2d5016;
+        }
+
+        .btn-outline-success:hover {
+            background: #2d5016;
+            color: white;
+        }
+
+        /* Grid system */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+
+        .col, .col-md-3, .col-md-4, .col-md-6, .col-md-8 {
+            padding: 0 10px;
+            margin-bottom: 20px;
+        }
+
+        .col-md-3 { flex: 0 0 25%; }
+        .col-md-4 { flex: 0 0 33.333%; }
+        .col-md-6 { flex: 0 0 50%; }
+        .col-md-8 { flex: 0 0 66.666%; }
+        .col { flex: 1; }
+
+        @media (max-width: 768px) {
+            .col-md-3, .col-md-4, .col-md-6, .col-md-8 {
+                flex: 0 0 100%;
+            }
+        }
+
+        /* Utility classes */
+        .mb-4 { margin-bottom: 2rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-0 { margin-bottom: 0; }
+        .mt-4 { margin-top: 2rem; }
+        .text-center { text-align: center; }
+        .text-end { text-align: right; }
+        .text-muted { color: #6b7280; }
+        .d-flex { display: flex; }
+        .d-grid { display: grid; }
+        .gap-2 { gap: 0.5rem; }
+        .justify-content-between { justify-content: space-between; }
+        .align-items-center { align-items: center; }
+
+        /* Modern stat cards */
+        .stat-card {
+            border-left: 4px solid #d4af37;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+        }
+
+        .pool-card {
+            background: linear-gradient(135deg, #2d5016, #d4af37);
+            color: white;
+        }
+
+        /* Modern progress bars */
+        .progress {
+            height: 8px;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, #d4af37, #2d5016);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        /* Modern badges */
+        .badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .bg-success { background: #2d5016 !important; color: white !important; }
+        .bg-warning { background: #d4af37 !important; color: #2d5016 !important; }
+
+        /* Color utilities */
+        .text-success { color: #2d5016 !important; }
+        .text-info { color: #0ea5e9 !important; }
+        .text-warning { color: #d4af37 !important; }
+        .text-primary { color: #2d5016 !important; }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Updated navbar structure with modern styling -->
+    <nav class="navbar">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('dashboard.dashboard') }}">
-                🌶️ SpiceHold
-            </a>
-            {% if current_user.is_authenticated %}
-            <div class="navbar-nav ms-auto">
-                <span class="navbar-text me-3">Welcome, {{ current_user.name }}!</span>
-                <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+            <div class="navbar-content">
+                <!-- Updated logo to match landing page with leaf emoji and improved styling -->
+                <a class="navbar-brand" href="{{ url_for('dashboard.dashboard') }}">
+                    🌿 Spicehold
+                </a>
+                {% if current_user.is_authenticated %}
+                <div class="navbar-nav">
+                    <span class="navbar-text">Welcome, {{ current_user.name }}!</span>
+                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
         </div>
     </nav>
 
@@ -32,9 +292,9 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }}" role="alert">
                         {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <button type="button" class="btn-close" onclick="this.parentElement.style.display='none'">&times;</button>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -43,7 +303,6 @@
         {% block content %}{% endblock %}
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     {% block scripts %}{% endblock %}
 </body>

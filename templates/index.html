@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spicehold - Empowering Small Farmers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f7f8f0;
+            --foreground: #2d3748;
+            --card: #ffffff;
+            --card-foreground: #2d3748;
+            --primary: #2f855a;
+            --primary-foreground: #ffffff;
+            --secondary: #d69e2e;
+            --secondary-foreground: #2d3748;
+            --muted: #f0fff4;
+            --muted-foreground: #4a5568;
+            --accent: #d69e2e;
+            --accent-foreground: #2d3748;
+            --border: #e2e8f0;
+            --radius: 0.5rem;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(251, 191, 36, 0.8) 100%);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .cardamom-bg {
+            background-image: url('/placeholder.svg?height=800&width=1200');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold" style="color: var(--primary);">🌿 Spicehold</h1>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#features" class="hover:text-yellow-600 px-3 py-2 text-sm font-medium">Features</a>
+                        <a href="#how-it-works" class="hover:text-yellow-600 px-3 py-2 text-sm font-medium">How It Works</a>
+                        <a href="#testimonials" class="hover:text-yellow-600 px-3 py-2 text-sm font-medium">Stories</a>
+                        <a href="/login" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center hero-gradient">
+        <div class="absolute inset-0 bg-black opacity-30"></div>
+        <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 fade-in">
+                <span class="block text-yellow-300 font-extrabold tracking-tight">READY TO EARN MORE</span>
+                <span class="block text-white font-extrabold tracking-tight">WITH YOUR CARDAMOM?</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-white mb-8 fade-in leading-relaxed font-medium" style="animation-delay: 0.2s;">
+                By harnessing technology and innovation, we provide services that help small farmers grow across the value chain
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in" style="animation-delay: 0.4s;">
+                <button class="px-8 py-4 bg-white text-green-700 rounded-lg font-semibold text-lg hover:bg-yellow-50 transition-colors pulse-animation" onclick="window.location.href='/login'">
+                    Get Started Now
+                </button>
+                <button class="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold text-lg hover:bg-white hover:text-green-700 transition-colors" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+                    Learn More
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--primary);">Smart Solutions for Smart Farmers</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Our AI-powered platform combines market intelligence with community strength to maximize your cardamom profits
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Feature 1 -->
+                <div class="card-hover bg-white p-8 rounded-xl shadow-lg border fade-in">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mb-6" style="background-color: var(--accent);">
+                        <span class="text-2xl">📈</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4" style="color: var(--primary);">Price Prediction AI</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Our advanced machine learning algorithms analyze market trends, weather patterns, and historical data to predict the optimal selling time for your cardamom harvest.
+                    </p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Real-time market analysis</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Weather impact predictions</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Personalized recommendations</li>
+                    </ul>
+                </div>
+                
+                <div class="fade-in">
+                    <img src="/placeholder.svg?height=400&width=500" alt="Price Prediction Dashboard" class="rounded-xl shadow-lg">
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="fade-in order-2 md:order-1">
+                    <img src="/placeholder.svg?height=400&width=500" alt="Harvest Pooling" class="rounded-xl shadow-lg">
+                </div>
+                
+                <div class="card-hover bg-white p-8 rounded-xl shadow-lg border fade-in order-1 md:order-2">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mb-6" style="background-color: var(--accent);">
+                        <span class="text-2xl">🤝</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4" style="color: var(--primary);">Harvest Pooling Network</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Connect with fellow farmers to pool your harvests, negotiate better prices with exporters, and access markets that were previously out of reach for individual farmers.
+                    </p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Direct exporter connections</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Collective bargaining power</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Transparent pricing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-20" style="background-color: var(--muted);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--primary);">How Spicehold Works</h2>
+                <p class="text-xl text-gray-600">Simple steps to maximize your cardamom profits</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center fade-in">
+                    <div class="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-2xl font-bold" style="background-color: var(--primary);">1</div>
+                    <h3 class="text-xl font-bold mb-4">Register Your Farm</h3>
+                    <p class="text-gray-600">Sign up and provide basic information about your cardamom farm, including location and typical harvest size.</p>
+                </div>
+                
+                <div class="text-center fade-in" style="animation-delay: 0.2s;">
+                    <div class="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-2xl font-bold" style="background-color: var(--accent);">2</div>
+                    <h3 class="text-xl font-bold mb-4">Get AI Predictions</h3>
+                    <p class="text-gray-600">Receive personalized price predictions and optimal selling time recommendations based on market analysis.</p>
+                </div>
+                
+                <div class="text-center fade-in" style="animation-delay: 0.4s;">
+                    <div class="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-2xl font-bold" style="background-color: var(--primary);">3</div>
+                    <h3 class="text-xl font-bold mb-4">Pool & Sell</h3>
+                    <p class="text-gray-600">Join harvest pools with nearby farmers and connect directly with exporters for better prices and market access.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--primary);">Stories from Our Farmers</h2>
+                <p class="text-xl text-gray-600">Real farmers, real results</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-hover bg-white p-6 rounded-xl shadow-lg border fade-in">
+                    <div class="flex items-center mb-4">
+                        <img src="/placeholder.svg?height=60&width=60" alt="Farmer" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Rajesh Kumar</h4>
+                            <p class="text-sm text-gray-600">Idukki, Kerala</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"The price prediction helped me wait for the right moment to sell. I earned 30% more than last season!"</p>
+                </div>
+                
+                <div class="card-hover bg-white p-6 rounded-xl shadow-lg border fade-in" style="animation-delay: 0.2s;">
+                    <div class="flex items-center mb-4">
+                        <img src="/placeholder.svg?height=60&width=60" alt="Farmer" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Priya Nair</h4>
+                            <p class="text-sm text-gray-600">Wayanad, Kerala</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"Pooling our harvest with 5 other farmers got us direct access to exporters. No more middlemen!"</p>
+                </div>
+                
+                <div class="card-hover bg-white p-6 rounded-xl shadow-lg border fade-in" style="animation-delay: 0.4s;">
+                    <div class="flex items-center mb-4">
+                        <img src="/placeholder.svg?height=60&width=60" alt="Farmer" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Murugan Pillai</h4>
+                            <p class="text-sm text-gray-600">Thekkady, Kerala</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"This platform connected me with farmers I never knew existed. Together we're stronger!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">🌿 Spicehold</h3>
+                    <p class="text-gray-400">Empowering small farmers through technology and community.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Platform</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Price Predictions</a></li>
+                        <li><a href="#" class="hover:text-white">Harvest Pooling</a></li>
+                        <li><a href="#" class="hover:text-white">Market Access</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white">Community</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">WhatsApp</a></li>
+                        <li><a href="#" class="hover:text-white">Telegram</a></li>
+                        <li><a href="#" class="hover:text-white">Facebook</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Spicehold. Built with ❤️ for farmers.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+
+        // Mobile menu toggle (if needed)
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Add some interactive hover effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-4px)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

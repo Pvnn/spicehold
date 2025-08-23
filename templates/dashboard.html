@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Updated header with modern typography -->
 <div class="row mb-4">
     <div class="col">
-        <h2>🌾 Farm Dashboard</h2>
-        <p class="text-muted">Welcome back, {{ current_user.name }}! Here's your farm overview.</p>
+        <!-- Updated header to match landing page branding and improved visual hierarchy -->
+        <div class="d-flex align-items-center mb-3">
+            <div class="me-3" style="font-size: 3rem;"></div>
+            <div>
+                <h2 style="font-family: 'Poppins', sans-serif; font-weight: 800; color: #2d5016; font-size: 2.5rem; margin-bottom: 0;">Farm Dashboard</h2>
+                <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 0;">Welcome back, {{ current_user.name }}! Here's your farm overview.</p>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -13,32 +20,40 @@
     <div class="col-md-3">
         <div class="card stat-card">
             <div class="card-body text-center">
-                <h3 class="text-success">{{ stats.active_pools }}</h3>
-                <p class="mb-0">Active Pools</p>
+                <!-- Added icon and improved visual hierarchy for stats -->
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤝</div>
+                <h3 class="text-success" style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 2rem;">{{ stats.active_pools }}</h3>
+                <p class="mb-0" style="font-weight: 500; color: #6b7280;">Active Pools</p>
             </div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card stat-card">
             <div class="card-body text-center">
-                <h3 class="text-info">{{ stats.total_quantity }} kg</h3>
-                <p class="mb-0">Total Quantity</p>
+                <!-- Added weight icon for quantity stat -->
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚖️</div>
+                <h3 class="text-info" style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 2rem;">{{ stats.total_quantity }} kg</h3>
+                <p class="mb-0" style="font-weight: 500; color: #6b7280;">Total Quantity</p>
             </div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card stat-card">
             <div class="card-body text-center">
-                <h3 class="text-warning">{{ stats.total_forecasts }}</h3>
-                <p class="mb-0">Forecasts Made</p>
+                <!-- Added chart icon for forecasts stat -->
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📈</div>
+                <h3 class="text-warning" style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 2rem;">{{ stats.total_forecasts }}</h3>
+                <p class="mb-0" style="font-weight: 500; color: #6b7280;">Forecasts Made</p>
             </div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card stat-card">
             <div class="card-body text-center">
-                <h3 class="text-primary">₹{{ "%.0f"|format(stats.avg_potential_gain) }}/kg</h3>
-                <p class="mb-0">Avg. Potential Gain</p>
+                <!-- Added money icon for potential gain stat -->
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💰</div>
+                <h3 class="text-primary" style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 2rem;">₹{{ "%.0f"|format(stats.avg_potential_gain) }}/kg</h3>
+                <p class="mb-0" style="font-weight: 500; color: #6b7280;">Avg. Potential Gain</p>
             </div>
         </div>
     </div>
@@ -49,10 +64,17 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">📊 Quick Actions</h5>
+                <!-- Updated card title with better icon and typography -->
+                <h5 class="card-title" style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #2d5016; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1.5rem;">⚡</span> Quick Actions
+                </h5>
                 <div class="d-grid gap-2">
-                    <a href="{{ url_for('forecast.forecast') }}" class="btn btn-outline-primary">Generate Price Forecast</a>
-                    <a href="{{ url_for('pools.pools') }}" class="btn btn-outline-success">View Export Pools</a>
+                    <a href="{{ url_for('forecast.forecast') }}" class="btn btn-outline-primary">
+                        <span style="margin-right: 0.5rem;">📊</span>Generate Price Forecast
+                    </a>
+                    <a href="{{ url_for('pools.pools') }}" class="btn btn-outline-success">
+                        <span style="margin-right: 0.5rem;">🤝</span>View Export Pools
+                    </a>
                 </div>
             </div>
         </div>
@@ -60,21 +82,30 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">📈 Recent Forecasts</h5>
+                <!-- Updated recent forecasts card with better visual design -->
+                <h5 class="card-title" style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #2d5016; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1.5rem;">📈</span> Recent Forecasts
+                </h5>
                 {% if recent_forecasts %}
                     {% for forecast in recent_forecasts %}
-                    <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2" style="padding: 1rem; background: linear-gradient(135deg, rgba(45, 80, 22, 0.05), rgba(212, 175, 55, 0.05)); border-radius: 12px; border-left: 4px solid #d4af37; margin-bottom: 0.75rem;">
                         <div>
-                            <small class="text-muted">{{ forecast.created_at.strftime('%b %d, %Y') }}</small><br>
-                            <strong>{{ forecast.action }}</strong> - ₹{{ "%.0f"|format(forecast.potential_gain) }}/kg gain
+                            <small class="text-muted" style="font-weight: 500;">{{ forecast.created_at.strftime('%b %d, %Y') }}</small><br>
+                            <strong style="color: #2d5016; font-weight: 600;">{{ forecast.action }}</strong> - ₹{{ "%.0f"|format(forecast.potential_gain) }}/kg gain
                         </div>
-                        <span class="badge bg-{{ 'warning' if forecast.action == 'HOLD' else 'success' }}">
+                        <span class="badge bg-{{ 'warning' if forecast.action == 'HOLD' else 'success' }}" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
                             {{ forecast.action }}
                         </span>
                     </div>
                     {% endfor %}
                 {% else %}
-                    <p class="text-muted">No forecasts yet. <a href="{{ url_for('forecast.forecast') }}">Generate your first forecast!</a></p>
+                    <div style="text-align: center; padding: 2rem; background: rgba(248, 250, 252, 0.5); border-radius: 12px; border: 2px dashed #d4af37;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <p class="text-muted" style="margin-bottom: 1rem;">No forecasts yet.</p>
+                        <a href="{{ url_for('forecast.forecast') }}" class="btn btn-primary" style="font-weight: 600;">
+                            Generate Your First Forecast!
+                        </a>
+                    </div>
                 {% endif %}
             </div>
         </div>
@@ -85,31 +116,48 @@
 {% if pool_details %}
 <div class="row">
     <div class="col">
-        <h4>🤝 My Pool Memberships</h4>
+        <!-- Updated section header with modern design and better visual hierarchy -->
+        <div class="d-flex align-items-center mb-4">
+            <div class="me-3" style="font-size: 2.5rem;">🤝</div>
+            <h4 style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #2d5016; margin-bottom: 0; font-size: 1.8rem;">My Pool Memberships</h4>
+        </div>
         {% for pool_data in pool_details %}
-        <div class="card mb-3">
+        <div class="card mb-3" style="border-left: 4px solid #d4af37;">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-8">
-                        <h5 class="card-title">{{ pool_data.pool.name }}</h5>
-                        <p class="card-text">
-                            <strong>Your Contribution:</strong> {{ pool_data.membership.quantity_contributed }} kg<br>
-                            <strong>Target Price:</strong> ₹{{ "%.0f"|format(pool_data.pool.target_price) }}/kg<br>
-                            <strong>Status:</strong> {{ pool_data.membership.status.title() }}
-                        </p>
-                        <div class="progress mb-2">
-                            <div class="progress-bar" role="progressbar" 
-                                 style="width: {{ "%.1f"|format(pool_data.progress) }}%"
-                                 aria-valuenow="{{ "%.1f"|format(pool_data.progress) }}" 
-                                 aria-valuemin="0" aria-valuemax="100">
-                                {{ "%.1f"|format(pool_data.progress) }}%
+                        <!-- Enhanced pool card design with better typography and spacing -->
+                        <h5 class="card-title" style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #2d5016; font-size: 1.3rem;">{{ pool_data.pool.name }}</h5>
+                        <div style="background: rgba(248, 250, 252, 0.5); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p style="margin-bottom: 0.5rem;"><strong style="color: #2d5016;">Your Contribution:</strong> <span style="color: #d4af37; font-weight: 600;">{{ pool_data.membership.quantity_contributed }} kg</span></p>
+                                    <p style="margin-bottom: 0.5rem;"><strong style="color: #2d5016;">Target Price:</strong> <span style="color: #d4af37; font-weight: 600;">₹{{ "%.0f"|format(pool_data.pool.target_price) }}/kg</span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p style="margin-bottom: 0.5rem;"><strong style="color: #2d5016;">Status:</strong> 
+                                        <span class="badge bg-{{ 'success' if pool_data.membership.status == 'active' else 'warning' }}" style="font-size: 0.75rem;">
+                                            {{ pool_data.membership.status.title() }}
+                                        </span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                        <div class="progress mb-2" style="height: 10px; border-radius: 5px;">
+                            <div class="progress-bar" role="progressbar" 
+                                 style="width: {{ "%.1f"|format(pool_data.progress) }}%; background: linear-gradient(135deg, #d4af37, #2d5016);"
+                                 aria-valuenow="{{ "%.1f"|format(pool_data.progress) }}" 
+                                 aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <small style="color: #6b7280; font-weight: 600;">{{ "%.1f"|format(pool_data.progress) }}% Complete</small>
                     </div>
                     <div class="col-md-4">
-                        <div class="text-end">
-                            <h6 class="text-success">Estimated Value</h6>
-                            <h4>₹{{ "{:,}".format(pool_data.estimated_value|int) }}</h4>
+                        <!-- Enhanced estimated value display with better visual design -->
+                        <div class="text-end" style="background: linear-gradient(135deg, rgba(45, 80, 22, 0.1), rgba(212, 175, 55, 0.1)); padding: 1.5rem; border-radius: 12px; height: 100%;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">💰</div>
+                            <h6 class="text-success" style="font-weight: 600; margin-bottom: 0.5rem; color: #2d5016 !important;">Estimated Value</h6>
+                            <h4 style="font-family: 'Poppins', sans-serif; font-weight: 800; color: #d4af37; font-size: 1.8rem;">₹{{ "{:,}".format(pool_data.estimated_value|int) }}</h4>
                         </div>
                     </div>
                 </div>
