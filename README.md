@@ -52,12 +52,16 @@ The app connects **farmers** and **administrators** to create a transparent mark
 
 ## 🖼️ Screenshots  
 - **Farmer Dashboard**  
+![Farmer Dashboard](./static/dashboard.png)
     
 - **Price Forecasting Interface**  
+![Predictions](./static/pred.png)
     
 - **Pool Management System**  
+![Pool Management](./static/pools.png)
     
 - **Admin Analytics Panel**  
+![Admin Panel](./static/admin_panel.png)
     
 
 ***
@@ -89,7 +93,6 @@ The app connects **farmers** and **administrators** to create a transparent mark
 - **Advanced ML Models:** Ensemble methods combining LSTM, XGBoost, and Prophet for improved accuracy  
 - **External Data Integration:** Weather APIs, satellite imagery, and auction volume data  
 - **Mobile Application:** Offline-capable app for rural farmers with limited connectivity  
-- **Blockchain Traceability:** End-to-end supply chain transparency for export compliance  
 - **Financial Services:** Credit scoring, crop insurance, and investment product integration  
 
 ***
@@ -113,5 +116,3 @@ The app connects **farmers** and **administrators** to create a transparent mark
 ***
 
 **Note:** This project represents a learning journey in applied machine learning for social impact. While the current forecasting model provides meaningful value to farmers, we acknowledge the complexity of commodity markets and remain committed to continuous improvement through advanced modeling techniques and domain expertise integration.
-
-[1](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/50167803/8908dea6-d818-46d5-bf08-eb121de24324/image.jpg)
